@@ -299,6 +299,57 @@ elif page == "Exploración histórica":
 
 elif page == "Tendencia estimada":
     page_header("Tendencia estimada", "Clasificación del siguiente registro disponible usando el pipeline KNN evaluado")
+    latest_rows = (
+        prediction_ready_rows(data)
+        .sort_values("FECHA")
+        .groupby(["PRODUCTO", "TIPO_PRECIO", "UNIDAD_MEDIDA"], as_index=False)
+        .tail(1)
+        .copy()
+    )
+    latest_rows["PREDICCION"] = model.predict(latest_rows[FEATURES_B])
+    latest_probabilities = model.predict_proba(latest_rows[FEATURES_B])
+    latest_rows["APOYO_VECINOS"] = latest_probabilities.max(axis=1) * 100
+
+    st.subheader("Resumen del último registro por serie")
+    prediction_counts = latest_rows["PREDICCION"].value_counts()
+    summary_columns = st.columns(3)
+    summary_columns[0].metric("SUBE", int(prediction_counts.get("SUBE", 0)))
+    summary_columns[1].metric("BAJA", int(prediction_counts.get("BAJA", 0)))
+    summary_columns[2].metric("ESTABLE", int(prediction_counts.get("ESTABLE", 0)))
+
+    trend_filter = st.selectbox(
+        "Mostrar productos clasificados como",
+        ["TODAS", "SUBE", "BAJA", "ESTABLE"],
+        key="trend_filter",
+    )
+    visible_trends = latest_rows if trend_filter == "TODAS" else latest_rows[latest_rows["PREDICCION"] == trend_filter]
+    trend_table = visible_trends[
+        ["PRODUCTO", "TIPO_PRECIO", "UNIDAD_MEDIDA", "PRECIO_ACTUAL", "PREDICCION", "APOYO_VECINOS"]
+    ].rename(
+        columns={
+            "PRODUCTO": "Producto",
+            "TIPO_PRECIO": "Tipo de precio",
+            "UNIDAD_MEDIDA": "Unidad",
+            "PRECIO_ACTUAL": "Último precio",
+            "PREDICCION": "Tendencia",
+            "APOYO_VECINOS": "Proporción de vecinos",
+        }
+    )
+    st.dataframe(
+        trend_table.sort_values(["Tendencia", "Producto"]),
+        width="stretch",
+        hide_index=True,
+        column_config={
+            "Último precio": st.column_config.NumberColumn(format="S/ %.2f"),
+            "Proporción de vecinos": st.column_config.ProgressColumn(format="%.1f %%", min_value=0, max_value=100),
+        },
+    )
+    st.caption(
+        "La tabla muestra clasificaciones experimentales del modelo para el último registro disponible; "
+        "no son recomendaciones de compra o venta."
+    )
+    st.divider()
+    st.subheader("Consultar un producto")
     prediction_panel(data, model, metadata)
     st.warning(
         "La clasificación no es un precio futuro exacto ni una recomendación comercial. El desempeño "
