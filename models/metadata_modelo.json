@@ -1,0 +1,154 @@
+{
+  "proyecto": "Clasificación de variaciones de precios agrícolas en Piura",
+  "modelo_despliegue": "KNN con variables climáticas",
+  "umbral_porcentual": 1.0,
+  "clases": [
+    "BAJA",
+    "ESTABLE",
+    "SUBE"
+  ],
+  "caracteristicas_modelo_a": [
+    "PRECIO_ACTUAL",
+    "PRECIO_LAG1",
+    "PRECIO_LAG2",
+    "VAR_PCT_ANT",
+    "MEDIA_MOVIL_3",
+    "STD_MOVIL_3",
+    "DIAS_DESDE_ANT",
+    "MES",
+    "DIA_SEMANA",
+    "PRODUCTO",
+    "CATEGORIA",
+    "TIPO_PRECIO",
+    "UNIDAD_MEDIDA"
+  ],
+  "caracteristicas_modelo_b": [
+    "PRECIO_ACTUAL",
+    "PRECIO_LAG1",
+    "PRECIO_LAG2",
+    "VAR_PCT_ANT",
+    "MEDIA_MOVIL_3",
+    "STD_MOVIL_3",
+    "DIAS_DESDE_ANT",
+    "MES",
+    "DIA_SEMANA",
+    "LLUVIA_DIA_ANT",
+    "TMAX_DIA_ANT",
+    "TMIN_DIA_ANT",
+    "LLUVIA_ACUM_7D",
+    "LLUVIA_ACUM_30D",
+    "TMAX_MEDIA_7D",
+    "TMIN_MEDIA_7D",
+    "NINO12",
+    "PRODUCTO",
+    "CATEGORIA",
+    "TIPO_PRECIO",
+    "UNIDAD_MEDIDA"
+  ],
+  "hiperparametros": {
+    "modelo_a": {
+      "k": 7,
+      "p": 1,
+      "distancia": "Manhattan"
+    },
+    "modelo_b": {
+      "k": 3,
+      "p": 1,
+      "distancia": "Manhattan"
+    }
+  },
+  "metricas_prueba": {
+    "referencia": {
+      "accuracy": 0.674793208532869,
+      "balanced_accuracy": 0.3333333333333333,
+      "precision_macro": 0.22493106951095632,
+      "recall_macro": 0.3333333333333333,
+      "f1_macro": 0.2686075730006065
+    },
+    "modelo_a_sin_clima": {
+      "accuracy": 0.6316935132781889,
+      "balanced_accuracy": 0.3548341307243979,
+      "precision_macro": 0.3697602523926126,
+      "recall_macro": 0.3548341307243979,
+      "f1_macro": 0.33832814143763806
+    },
+    "modelo_b_con_clima": {
+      "accuracy": 0.5846756639094471,
+      "balanced_accuracy": 0.3583065128540444,
+      "precision_macro": 0.3626938928837798,
+      "recall_macro": 0.3583065128540444,
+      "f1_macro": 0.3534916175559313
+    }
+  },
+  "particiones": {
+    "entrenamiento": 10132,
+    "validacion": 2176,
+    "prueba": 2297,
+    "fecha_objetivo_fin_entrenamiento": "2025-08-08",
+    "fecha_objetivo_fin_validacion": "2025-11-28",
+    "fecha_objetivo_fin_prueba": "2026-03-13"
+  },
+  "entrenamiento_final": {
+    "filas": 14605,
+    "productos": [
+      "Aceite clasico botella 900 ml",
+      "Aji escabeche",
+      "Aji rocoto",
+      "Ajo criollo o napuri",
+      "Arroz extra",
+      "Arroz superior",
+      "Arveja verde blanca serrana",
+      "Azucar blanca nacional (granel)",
+      "Azucar rubia nacional (granel)",
+      "Camote morado",
+      "Carne de pollo (eviscerado)",
+      "Carne de porcino (corte unico)",
+      "Carne fresca de vacuno",
+      "Cebolla cabeza roja",
+      "Chirimoya cumbe",
+      "Choclo (tipo cusco)",
+      "Fideos nicolini tallarin",
+      "Frijol canario",
+      "Frijol castilla",
+      "Garbanzo",
+      "Haba verde serrana",
+      "Huevos rosados",
+      "Leche evaporada (azul) 400 g",
+      "Leche fresca",
+      "Leche reconstituida (azul) 395 gr",
+      "Lenteja",
+      "Limon sutil bolsa",
+      "Mango edward",
+      "Manzana delicia",
+      "Manzana israel",
+      "Melocoton durazno huayco",
+      "Melon coquito",
+      "Naranja valencia",
+      "Olluco largo",
+      "Pallar",
+      "Palta fuerte",
+      "Papa amarilla",
+      "Papa canchan",
+      "Papaya",
+      "Pina criolla",
+      "Platano bellaco",
+      "Platano seda congo",
+      "Sandia",
+      "Tomate",
+      "Uva alfonso lavalett",
+      "Uva italia",
+      "Uva red globe",
+      "Vainita americana",
+      "Yuca blanca",
+      "Zanahoria",
+      "Zapallo macre"
+    ],
+    "fecha_maxima_con_etiqueta": "2026-03-13"
+  },
+  "versiones": {
+    "scikit_learn": "1.9.1",
+    "pandas": "2.3.3"
+  },
+  "generado_utc": "2026-11-20T17:28:13.015512+00:00",
+  "advertencia": "Modelo académico con desempeño modesto. La salida es una clasificación experimental, no una recomendación de compra o venta ni evidencia causal."
+}
