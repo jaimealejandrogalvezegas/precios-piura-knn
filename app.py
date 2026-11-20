@@ -67,6 +67,7 @@ def inject_styles() -> None:
             background: white; border: 1px solid #ECECEC; border-radius: 12px;
             padding: .8rem 1rem; box-shadow: 0 2px 10px rgba(0,0,0,.035);
         }}
+        [data-testid="stMetricValue"] {{ font-size: 2rem; }}
         .hero {{
             background: linear-gradient(120deg, #FFF4EC 0%, #FFFFFF 72%);
             border: 1px solid #F2D1BB; border-left: 7px solid var(--institutional);
